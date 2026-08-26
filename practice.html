@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freedom to Fantasy — Practice Spinner</title>
+<style>
+  :root{
+    --navy:#0f2547; --navy2:#173463; --red:#b3202c; --red2:#8f1922;
+    --cream:#faf7ef; --paper:#ffffff; --ink:#1c2433; --muted:#5b6a82;
+    --gold:#c8a24a; --line:#e4ddcb; --chip:#f0ece0; --green:#1f7a44;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2{font-family:Georgia,"Times New Roman",serif;color:var(--navy);line-height:1.15}
+  .flagbar{height:6px;width:100%;
+    background:linear-gradient(90deg,var(--red) 0 33.3%,#fff 33.3% 66.6%,var(--navy) 66.6% 100%)}
+  header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;text-align:center;
+    padding:30px 18px 26px;border-bottom:5px solid var(--gold);position:relative;overflow:hidden}
+  header .kick{letter-spacing:.24em;text-transform:uppercase;font-size:11px;color:var(--gold);margin:0 0 8px;font-weight:700}
+  header h1{color:#fff;margin:0;font-size:clamp(26px,6vw,40px)}
+  header p{color:#cdd8ea;margin:8px 0 0;font-size:14px}
+  .ribbon{position:absolute;top:16px;right:-42px;transform:rotate(45deg);background:var(--red);
+    color:#fff;font-size:11px;font-weight:800;letter-spacing:.14em;padding:5px 52px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+
+  .wrap{max-width:640px;margin:0 auto;padding:24px 18px 60px}
+
+  .practicebar{background:#fff6e0;border:1px solid var(--gold);border-radius:12px;padding:12px 16px;
+    margin-bottom:18px;font-size:14px;color:#7a5a12;text-align:center}
+  .practicebar b{color:var(--red2)}
+
+  .field{margin-bottom:16px}
+  label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 5px}
+  input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px;
+    background:#fff;color:var(--ink);font-family:inherit}
+  input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,162,74,.2)}
+
+  .reel-shell{background:var(--navy);border-radius:18px;padding:8px;box-shadow:0 10px 30px rgba(15,37,71,.25);position:relative}
+  .window{height:150px;overflow:hidden;border-radius:12px;background:#0b1c38;position:relative;border:2px solid var(--gold)}
+  .marker{position:absolute;top:50%;left:0;right:0;height:50px;transform:translateY(-50%);
+    border-top:2px solid rgba(200,162,74,.5);border-bottom:2px solid rgba(200,162,74,.5);
+    background:rgba(200,162,74,.07);z-index:1;pointer-events:none}
+  .strip{will-change:transform}
+  .cell{height:50px;display:flex;align-items:center;justify-content:center;color:#fff;
+    font-family:Georgia,serif;font-size:19px;font-weight:700;text-align:center;padding:0 14px;opacity:.55}
+  .cell.hot{opacity:1;color:var(--gold)}
+
+  button.spin{width:100%;margin-top:16px;padding:16px;border:none;border-radius:14px;cursor:pointer;
+    background:var(--red);color:#fff;font-size:19px;font-weight:800;letter-spacing:.04em;font-family:Georgia,serif;
+    box-shadow:0 6px 16px rgba(179,32,44,.35);transition:.15s}
+  button.spin:hover{background:var(--red2)}
+  button.spin:disabled{background:#9aa4b5;cursor:default;box-shadow:none}
+  .counter{text-align:center;font-size:13px;color:var(--muted);margin-top:10px}
+
+  .result{margin-top:22px;background:var(--paper);border:1px solid var(--line);border-left:6px solid var(--gold);
+    border-radius:14px;padding:22px;box-shadow:0 6px 20px rgba(15,37,71,.08);display:none}
+  .result.show{display:block;animation:pop .4s ease}
+  @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+  .result .tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--red2);font-weight:700}
+  .result h2{margin:6px 0 8px;font-size:clamp(22px,5vw,30px)}
+  .result .desc{font-size:16px;color:var(--ink);margin:0 0 14px}
+  .result .determine{font-size:13.5px;color:var(--muted);background:#f7f4ea;border-radius:10px;padding:10px 12px;margin-bottom:16px}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap}
+  button.copy{flex:1;min-width:150px;padding:12px;border:1px solid var(--navy);background:var(--navy);color:#fff;
+    border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s}
+  button.copy:hover{background:var(--navy2)}
+  button.copy.ok{background:var(--green);border-color:var(--green)}
+  button.again{flex:0 0 auto;padding:12px 16px;border:1px solid var(--line);background:#fff;color:var(--muted);
+    border-radius:10px;font-size:14px;font-weight:700;cursor:pointer}
+
+  details{margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:4px 16px}
+  summary{cursor:pointer;font-weight:700;color:var(--navy);padding:12px 0;font-family:Georgia,serif}
+  .rl{padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .rl:last-child{border-bottom:none}
+  .rl b{color:var(--navy)}
+  .note{font-size:12.5px;color:var(--muted);text-align:center;margin-top:22px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="flagbar"></div>
+<header>
+  <div class="ribbon">PRACTICE</div>
+  <p class="kick">★ Freedom to Fantasy ★</p>
+  <h1>Practice Spinner</h1>
+  <p>Preseason fun — spin as many times as you want. Nothing counts yet!</p>
+</header>
+
+<div class="wrap">
+  <div class="practicebar">
+    🏈 <b>This is the practice wheel.</b> Take it for a test drive, see the rules in action, and get pumped for the season. No repeats, no locks, no scores — the real spinner shows up in Week 1.
+  </div>
+
+  <div class="field">
+    <label for="who">Spinning for fun as (optional)</label>
+    <input id="who" type="text" placeholder="Your team name">
+  </div>
+
+  <div class="reel-shell">
+    <div class="window">
+      <div class="marker"></div>
+      <div class="strip" id="strip"></div>
+    </div>
+  </div>
+  <button class="spin" id="spinBtn">🎡 SPIN THE WHEEL</button>
+  <div class="counter" id="counter"></div>
+
+  <div class="result" id="result">
+    <div class="tag">Practice draw</div>
+    <h2 id="rName"></h2>
+    <p class="desc" id="rDesc"></p>
+    <div class="determine" id="rDet"></div>
+    <div class="btnrow">
+      <button class="copy" id="copyBtn">📋 Copy to brag in the chat</button>
+      <button class="again" id="againBtn">Spin again</button>
+    </div>
+  </div>
+
+  <details>
+    <summary>See all 22 mystery rules</summary>
+    <div id="allRules"></div>
+  </details>
+
+  <p class="note">
+    For fun only — real weekly prizes start in Week 1.<br>
+    <b>Freedom to Fantasy</b> · 2026 preseason. · <a href="index.html">League Constitution</a>
+  </p>
+</div>
+
+<script>
+  var RULES = [
+    {n:"The Heartbreaker", d:"Highest score among teams that LOST their matchup.", det:"Look at every losing team this week; the one with the most points wins."},
+    {n:"Lucky Duck Award", d:"Lowest score among teams that WON their matchup.", det:"Look at every winning team this week; the one with the fewest points wins."},
+    {n:"Median Man", d:"Team whose score lands closest to the league's weekly average.", det:"Average all 10 team scores, then find the team nearest that number."},
+    {n:"No Cigar", d:"Losing team with the smallest margin of defeat.", det:"Among the losers, smallest point gap to their opponent wins."},
+    {n:"Absolute Beatdown", d:"Largest margin of victory of the week.", det:"Biggest winning margin across all five matchups."},
+    {n:"Photo Finish", d:"The two teams in the closest matchup split the pot.", det:"Smallest winning margin of the week — both teams in that game split the $10."},
+    {n:"Highway Robbery", d:"Winning team that would have LOST to the most other teams this week.", det:"For each winner, count how many of the other 9 teams outscored them; highest count wins."},
+    {n:"Bad Beat", d:"Losing team that would have BEATEN the most other teams this week.", det:"For each loser, count how many of the other 9 teams they outscored; highest count wins."},
+    {n:"Dragged Across the Finish Line", d:"Lowest-scoring individual starter on a team that still won.", det:"Among winning teams, find the single lowest starter score; that manager wins."},
+    {n:"David vs. Goliath", d:"Biggest upset versus ESPN's pregame projected margin.", det:"The winner that ESPN projected to lose by the most points."},
+    {n:"Boom Goes the Dynamite", d:"Player who beats his ESPN projection by the most points.", det:"Compare each started player's actual score to his projection; biggest overage wins for that manager."},
+    {n:"Exactly As Planned", d:"Team whose actual score lands closest to its ESPN projection.", det:"Smallest difference between a team's projected and actual total."},
+    {n:"Waiver Wire Wizard", d:"Highest-scoring started player who was added off waivers/FA this week.", det:"Among players picked up this week and started, the top scorer wins for that manager."},
+    {n:"Should've Started Him", d:"Biggest point gap between a benched player and the starter at the same position.", det:"The manager who left the most points on the bench at one position."},
+    {n:"Most Improved", d:"Biggest jump over your own previous week's score.", det:"Largest increase from last week's team total to this week's."},
+    {n:"Defense Wins Championships", d:"Highest D/ST score of the week.", det:"Top-scoring team defense among all started D/STs."},
+    {n:"TE University", d:"Highest single tight-end score of the week.", det:"Best started TE performance in the league."},
+    {n:"Spread the Field", d:"Your starters scored for the most different NFL teams.", det:"Count the distinct NFL teams your starters play for; most wins."},
+    {n:"Monday Night Monster", d:"Most total points from your players in the Monday night game.", det:"Add up each manager's points from MNF players; highest wins."},
+    {n:"Monday Night Miracle", d:"Biggest percentage of your team's total that came on Monday night.", det:"MNF points divided by total team points; highest percentage wins."},
+    {n:"Price Is Right", d:"Closest to 100.0 points WITHOUT going over.", det:"Nearest to 100 without exceeding it. If everyone's over 100, closest to 100 wins."},
+    {n:"Lucky 7s", d:"Team score whose whole-number part ends in 7 (117, 97, 137…).", det:"If nobody lands on a score ending in 7, the closest to one wins."}
+  ];
+
+  var strip=document.getElementById('strip'), result=document.getElementById('result'),
+      spinBtn=document.getElementById('spinBtn'), copyBtn=document.getElementById('copyBtn'),
+      counter=document.getElementById('counter');
+  var lastIdx=null, spins=0;
+
+  function buildStrip(finalIdx){
+    var cells=[],total=40;
+    for(var i=0;i<total;i++){cells.push(RULES[Math.floor(Math.random()*RULES.length)].n);}
+    cells.push(RULES[finalIdx].n);
+    strip.innerHTML='';
+    cells.forEach(function(name,idx){
+      var c=document.createElement('div');
+      c.className='cell'+(idx===cells.length-1?' hot':'');
+      c.textContent=name; strip.appendChild(c);
+    });
+    return cells.length;
+  }
+
+  function spin(){
+    var idx=Math.floor(Math.random()*RULES.length);
+    lastIdx=idx;
+    var count=buildStrip(idx);
+    result.classList.remove('show');
+    spinBtn.disabled=true;
+
+    var windowCenter=50,cellH=50,finalY=-((count-1)*cellH)+windowCenter;
+    strip.style.transition='none';
+    strip.style.transform='translateY('+windowCenter+'px)';
+    void strip.offsetHeight;
+    strip.style.transition='transform 3.2s cubic-bezier(.12,.66,.16,1)';
+    strip.style.transform='translateY('+finalY+'px)';
+
+    setTimeout(function(){
+      var r=RULES[idx];
+      document.getElementById('rName').textContent=r.n;
+      document.getElementById('rDesc').textContent=r.d;
+      document.getElementById('rDet').innerHTML='<b>How the winner is decided:</b> '+r.det;
+      result.classList.add('show');
+      result.scrollIntoView({behavior:'smooth',block:'center'});
+      copyBtn.classList.remove('ok'); copyBtn.textContent='📋 Copy to brag in the chat';
+      spinBtn.disabled=false; spinBtn.textContent='🎡 SPIN AGAIN';
+      spins++; counter.textContent='Practice spins: '+spins;
+    },3300);
+  }
+
+  copyBtn.addEventListener('click',function(){
+    if(lastIdx===null) return;
+    var r=RULES[lastIdx];
+    var who=document.getElementById('who').value.trim();
+    var by=who?(who+' just practice-spun:'):'Practice spin:';
+    var txt='🏈 FREEDOM TO FANTASY (preseason practice)\n'+by+'\n\n🎡 '+r.n+'\n'+r.d+'\n\n(Just for fun — real prizes start Week 1!)';
+    function done(){copyBtn.classList.add('ok');copyBtn.textContent='✓ Copied!';}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb);}else{fb();}
+    function fb(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');done();}catch(e){alert(txt);}document.body.removeChild(ta);}
+  });
+
+  spinBtn.addEventListener('click',spin);
+  document.getElementById('againBtn').addEventListener('click',function(){result.classList.remove('show');spin();});
+
+  (function(){var box=document.getElementById('allRules');
+    RULES.forEach(function(r){var d=document.createElement('div');d.className='rl';
+      d.innerHTML='<b>'+r.n+'</b> — '+r.d;box.appendChild(d);});})();
+
+  buildStrip(0); strip.style.transform='translateY(50px)';
+</script>
+</body>
+</html>

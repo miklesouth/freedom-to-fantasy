@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freedom to Fantasy — 2026 League Constitution</title>
+<style>
+  :root{
+    --navy:#0f2547; --navy2:#173463; --red:#b3202c; --red2:#8f1922;
+    --cream:#faf7ef; --paper:#ffffff; --ink:#1c2433; --muted:#5b6a82;
+    --gold:#c8a24a; --line:#e4ddcb; --chip:#f0ece0;
+    --shadow:0 6px 24px rgba(15,37,71,.10);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--cream); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:0 20px 80px}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif; line-height:1.2; color:var(--navy)}
+
+  .flagbar{height:6px;width:100%;
+    background:linear-gradient(90deg,var(--red) 0 33.3%,#fff 33.3% 66.6%,var(--navy) 66.6% 100%)}
+  header.hero{
+    background:linear-gradient(135deg,var(--navy) 0%, var(--navy2) 100%);
+    color:#fff; text-align:center; padding:54px 20px 46px; position:relative; overflow:hidden;
+    border-bottom:6px solid var(--gold);
+  }
+  header.hero::before{
+    content:""; position:absolute; inset:0;
+    background:repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 2px,transparent 2px 34px);
+    pointer-events:none;
+  }
+  header .kicker{letter-spacing:.28em;text-transform:uppercase;font-size:12px;color:var(--gold);margin:0 0 12px;font-weight:700}
+  header h1{color:#fff;font-size:clamp(34px,7vw,58px);margin:0 0 6px;text-shadow:0 2px 12px rgba(0,0,0,.25)}
+  header .sub{font-size:clamp(15px,2.4vw,19px);color:#dbe4f2;margin:6px 0 0}
+  header .sub i{color:#dbe4f2}
+  header .season{display:inline-block;margin-top:18px;background:var(--red);color:#fff;
+    padding:6px 18px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.05em}
+
+  nav.toc{background:var(--paper);border:1px solid var(--line);border-radius:14px;
+    padding:16px 18px;margin:-32px auto 34px;max-width:860px;box-shadow:var(--shadow);position:relative;z-index:2}
+  nav.toc h4{margin:0 0 10px;font-family:inherit;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  nav.toc ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+  nav.toc a{display:inline-block;text-decoration:none;color:var(--navy);background:var(--chip);
+    padding:6px 12px;border-radius:8px;font-size:13px;font-weight:600;border:1px solid transparent;transition:.15s}
+  nav.toc a:hover{border-color:var(--gold);background:#fff}
+
+  section{background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    padding:28px 30px;margin:0 0 22px;box-shadow:var(--shadow)}
+  section h2{font-size:clamp(22px,4vw,30px);margin:0 0 4px;display:flex;align-items:center;gap:12px}
+  section h2 .num{font-family:Georgia,serif;font-size:15px;color:#fff;background:var(--red);
+    width:34px;height:34px;min-width:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+  section .lede{color:var(--muted);margin:0 0 18px;font-size:15px}
+  p{margin:0 0 14px}
+  strong{color:var(--navy)}
+
+  .callout{background:linear-gradient(135deg,#fff9ec,#fdf3d8);border:1px solid var(--gold);
+    border-radius:12px;padding:16px 18px;margin:16px 0;font-size:14.5px}
+  .callout b{color:var(--red2)}
+  .altnote{font-size:14px;color:var(--muted);margin:4px 0 0}
+  .altnote b{color:var(--red2)}
+
+  .pot{display:flex;flex-wrap:wrap;gap:14px;margin:6px 0 20px}
+  .potcard{flex:1;min-width:150px;background:var(--navy);color:#fff;border-radius:14px;padding:18px 20px;text-align:center}
+  .potcard .big{font-family:Georgia,serif;font-size:34px;font-weight:700;line-height:1;color:#fff}
+  .potcard .lbl{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#b8c6dd;margin-top:8px}
+  .potcard.red{background:var(--red)}
+  .potcard.red .lbl{color:#f4d3d6}
+  .potcard.gold{background:linear-gradient(135deg,var(--gold),#a9832f)}
+  .potcard.gold .lbl{color:#fbf1d8}
+
+  table{width:100%;border-collapse:collapse;margin:12px 0 6px;font-size:14.5px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--chip);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  tr:last-child td{border-bottom:none}
+  td.money{font-weight:700;color:var(--navy);white-space:nowrap}
+  .medal{font-size:18px;margin-right:6px}
+  tfoot td{border-top:2px solid var(--navy);font-weight:700;background:#fbfaf6}
+
+  .cat{margin:20px 0 8px;font-family:Georgia,serif;color:var(--red2);font-size:16px;
+    border-left:4px solid var(--gold);padding-left:10px}
+  .rules{display:grid;grid-template-columns:1fr;gap:0}
+  .rule{padding:12px 0;border-bottom:1px dashed var(--line)}
+  .rule:last-child{border-bottom:none}
+  .rule .rn{font-weight:700;color:var(--navy)}
+  .rule .rd{color:var(--muted);font-size:14px}
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    background:#fdeaea;color:var(--red2);padding:2px 7px;border-radius:6px;margin-left:6px;vertical-align:middle}
+
+  .teams{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:6px}
+  .team{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fbfaf6}
+  .team .tn{font-weight:700;color:var(--navy)}
+  .team .tm{font-size:13px;color:var(--muted)}
+  .team.spot{border-color:var(--gold);background:#fff9ec}
+
+  .settings dl{display:grid;grid-template-columns:220px 1fr;gap:0;margin:0}
+  .settings dt{font-weight:700;color:var(--navy);padding:9px 0;border-bottom:1px solid var(--line)}
+  .settings dd{margin:0;padding:9px 0;border-bottom:1px solid var(--line);color:var(--ink)}
+  @media(max-width:560px){.settings dl{grid-template-columns:1fr}.settings dt{padding-bottom:0;border-bottom:none}.settings dd{padding-top:2px}}
+
+  .dates li{margin-bottom:8px}
+  footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 20px 0}
+  footer .stripe{height:4px;max-width:160px;margin:0 auto 16px;
+    background:linear-gradient(90deg,var(--red) 0 33.3%,var(--gold) 33.3% 66.6%,var(--navy) 66.6% 100%);border-radius:2px}
+  .spinref{font-weight:700;color:var(--red2)}
+</style>
+</head>
+<body>
+<div class="flagbar"></div>
+<header class="hero">
+  <p class="kicker">★ Est. 2024 ★ The ATL &amp; Beyond ★</p>
+  <h1>Freedom to Fantasy</h1>
+  <p class="sub"><i>League Constitution</i></p>
+  <span class="season">2026 Season</span>
+</header>
+
+<div class="wrap">
+
+  <nav class="toc">
+    <h4>Jump to</h4>
+    <ul>
+      <li><a href="#point">The Point</a></li>
+      <li><a href="#money">The Money</a></li>
+      <li><a href="#weekly">Weekly Mystery Pot</a></li>
+      <li><a href="#rules">The Mystery Rules</a></li>
+      <li><a href="#lastplace">Last Place</a></li>
+      <li><a href="#settings">Settings</a></li>
+      <li><a href="#teams">The Teams</a></li>
+      <li><a href="#dates">Key Dates</a></li>
+      <li><a href="#fine">Fine Print</a></li>
+    </ul>
+  </nav>
+
+  <section id="point">
+    <h2><span class="num">1</span> The Point</h2>
+    <p>A fun season where <strong>everybody stays in it week to week</strong>, even if your playoff hopes die in October. Set your lineup every week, make honest moves, talk a little trash in the league chat, and don't ghost your team. That's the deal.</p>
+    <div class="callout">
+      <b>The golden rule:</b> If your team goes inactive — stale lineup, injured guys left in, byes unfilled — you're not just hurting yourself, you're handing a free win to whoever you play. Don't be that manager. Life happens and a missed week is forgiven; disappearing for the season is akin to inviting your best friend over for dinner and then driving to Savannah just before they arrive, where hopefully you'll be eaten by an alligator as cosmic justice.
+    </div>
+  </section>
+
+  <section id="money">
+    <h2><span class="num">2</span> The Money</h2>
+    <p class="lede">10 teams × $25 buy-in = <strong>$250</strong> total pot.</p>
+    <div class="pot">
+      <div class="potcard gold"><div class="big">$250</div><div class="lbl">Total Pot</div></div>
+      <div class="potcard"><div class="big">$110</div><div class="lbl">Season Prizes</div></div>
+      <div class="potcard red"><div class="big">$140</div><div class="lbl">Weekly Mystery Pot</div></div>
+    </div>
+
+    <h3 style="font-size:18px;margin:8px 0 2px">Season prizes — paid after the championship (Week 17)</h3>
+    <table>
+      <thead><tr><th>Finish</th><th>Prize</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><span class="medal">🥇</span>Champion</td><td class="money">$70 + a Title Ring</td><td>Winner of the Week 17 title game</td></tr>
+        <tr><td><span class="medal">🥈</span>Runner-up</td><td class="money">$25</td><td>Roughly your buy-in back</td></tr>
+        <tr><td><span class="medal">🥉</span>Third place</td><td class="money">$15</td><td>Winner of the 3rd-place game</td></tr>
+      </tbody>
+      <tfoot><tr><td>Season subtotal</td><td class="money">$110</td><td></td></tr></tfoot>
+    </table>
+
+    <h3 style="font-size:18px;margin:20px 0 2px">Weekly Mystery Pot</h3>
+    <p><strong>$10 per week × 14 regular-season weeks (Weeks 1–14) = $140.</strong> A different, secret "mystery rule" decides each week's $10.</p>
+    <p class="altnote"><b>Alternate if the league prefers:</b> $90 / $30 / $18 + $8/week</p>
+  </section>
+
+  <section id="weekly">
+    <h2><span class="num">3</span> The Weekly Mystery Pot — how it works</h2>
+    <p>Each week, one rule from the master list wins that week's $10. The catch: <strong>the rule stays secret until halftime of Monday Night Football.</strong> By then almost every game is over and your lineup is long locked — so there's no way to chase a specific rule. You just set your honest best lineup, and the mystery rule rewards whoever happened to fit it that week.</p>
+    <p><strong>The spin:</strong> at MNF halftime, that week's designated spinner spins the online <a class="spinref" href="spinner.html" style="text-decoration:underline">Mystery Rule Spinner</a> and posts the result to the league. The winner is then tallied once the Monday night game ends.</p>
+    <p class="altnote">🎡 <b>Live tools:</b> <a href="spinner.html">Mystery Rule Spinner</a> · <a href="practice.html">preseason practice wheel</a></p>
+    <p><strong>Who spins?</strong> We rotate — <strong>everyone gets a turn.</strong> A set rotation (below) means each manager gets the spotlight at least once and has a reason to tune in. If a person can't make it, the commissioner spins on their behalf.</p>
+    <table>
+      <thead><tr><th style="width:80px">Weeks</th><th>Spinner rotation (edit freely)</th></tr></thead>
+      <tbody>
+        <tr><td>1–5</td><td>3Peat Dynasty → Baby's Got Dak → Black Hell Death → The Pink Nightmare → Clueless</td></tr>
+        <tr><td>6–10</td><td>Dent Bringing Dubs → Tecmo Superteam → Silence of the Lamb → Rowberry' Rascals → King James Version</td></tr>
+        <tr><td>11–14</td><td><strong>Previous week's lowest scorer</strong> — a little consolation spotlight for the week's saddest team</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="rules">
+    <h2><span class="num">4</span> The Mystery Rules</h2>
+    <p class="lede">The master list the spinner draws from. Ties split the pot evenly.</p>
+
+    <div class="cat">Score Shape</div>
+    <div class="rules">
+      <div class="rule"><span class="rn">The Heartbreaker</span> — <span class="rd">Highest score among teams that <b>lost</b> their matchup.</span></div>
+      <div class="rule"><span class="rn">Lucky Duck Award</span> — <span class="rd">Lowest score among teams that <b>won</b> their matchup.</span></div>
+      <div class="rule"><span class="rn">Median Man</span> — <span class="rd">Team whose score lands closest to the league's weekly average.</span></div>
+      <div class="rule"><span class="rn">No Cigar</span> — <span class="rd">Losing team with the smallest margin of defeat.</span></div>
+      <div class="rule"><span class="rn">Absolute Beatdown</span> — <span class="rd">Largest margin of victory of the week.</span></div>
+      <div class="rule"><span class="rn">Photo Finish</span> — <span class="rd">The two teams in the closest matchup of the week split the pot.</span></div>
+    </div>
+
+    <div class="cat">The What-If Files</div>
+    <div class="rules">
+      <div class="rule"><span class="rn">Highway Robbery</span> — <span class="rd">Winning team that would have <b>lost</b> to the most other teams that week (won on a soft schedule).</span></div>
+      <div class="rule"><span class="rn">Bad Beat</span> — <span class="rd">Losing team that would have <b>beaten</b> the most other teams that week (lost on a brutal schedule).</span></div>
+      <div class="rule"><span class="rn">Dragged Across the Finish Line</span> — <span class="rd">Lowest-scoring individual starter on a team that still won.</span></div>
+    </div>
+
+    <div class="cat">Beat the Projection</div>
+    <div class="rules">
+      <div class="rule"><span class="rn">David vs. Goliath</span> — <span class="rd">Biggest upset versus ESPN's pregame projected margin.</span></div>
+      <div class="rule"><span class="rn">Boom Goes the Dynamite</span> — <span class="rd">Player who beats his ESPN projection by the most points.</span></div>
+      <div class="rule"><span class="rn">Exactly As Planned</span> — <span class="rd">Team whose actual score lands closest to its ESPN projection.</span></div>
+    </div>
+
+    <div class="cat">Manager of the Week</div>
+    <div class="rules">
+      <div class="rule"><span class="rn">Waiver Wire Wizard</span> — <span class="rd">Highest-scoring started player who was added off waivers/free agency that week.</span></div>
+      <div class="rule"><span class="rn">Should've Started Him</span> — <span class="rd">Biggest point gap between a benched player and the starter at the same position (the "oops" award).</span></div>
+      <div class="rule"><span class="rn">Most Improved</span> — <span class="rd">Biggest jump over your own previous week's score. <span class="badge">Not eligible Week 1</span></span></div>
+    </div>
+
+    <div class="cat">Position &amp; Player</div>
+    <div class="rules">
+      <div class="rule"><span class="rn">Defense Wins Championships</span> — <span class="rd">Highest D/ST score of the week.</span></div>
+      <div class="rule"><span class="rn">TE University</span> — <span class="rd">Highest single tight-end score of the week.</span></div>
+      <div class="rule"><span class="rn">Spread the Field</span> — <span class="rd">Your starters scored for the most different NFL teams.</span></div>
+    </div>
+
+    <div class="cat">Monday Night</div>
+    <div class="rules">
+      <div class="rule"><span class="rn">Monday Night Monster</span> — <span class="rd">Most total points from your players in the Monday night game.</span></div>
+      <div class="rule"><span class="rn">Monday Night Miracle</span> — <span class="rd">Biggest percentage of your team's total that came on Monday night.</span></div>
+    </div>
+
+    <div class="cat">Game Show</div>
+    <div class="rules">
+      <div class="rule"><span class="rn">Price Is Right</span> — <span class="rd">Closest to 100.0 points <b>without going over.</b> (If everyone's over 100, closest to 100 wins.)</span></div>
+      <div class="rule"><span class="rn">Lucky 7s</span> — <span class="rd">Team score whose whole-number part ends in 7 (117, 97, 137…). If nobody lands on a "…7," closest to one wins.</span></div>
+    </div>
+  </section>
+
+  <section id="lastplace">
+    <h2><span class="num">5</span> Last Place &amp; the Consolation Ladder</h2>
+    <p class="lede">Because fear of finishing last is the best motivator of all.</p>
+    <p>The teams that miss the 6-team playoff aren't done — they drop into the <strong>consolation ladder</strong> and keep playing. Whoever finishes dead last takes home the <strong>Freedom to Fantasy Last-Place Trophy</strong> — an appropriately ridiculous traveling trophy — and keeps it on display until next season, complete with a commemorative photo for the league chat.</p>
+  </section>
+
+  <section id="settings" class="settings">
+    <h2><span class="num">6</span> League Settings at a Glance</h2>
+    <p class="lede">New rules meant for a more experienced group; full detail lives in the ESPN app.</p>
+    <dl>
+      <dt>Teams</dt><dd>10</dd>
+      <dt>Scoring</dt><dd>Head-to-Head Points, <strong>0.5 PPR (half-point per reception)</strong></dd>
+      <dt>Starting lineup</dt><dd>QB, RB, WR, WR, TE, FLEX, OP (any offensive player — a superflex), D/ST — <strong>8 starters, no kicker</strong></dd>
+      <dt>Bench / IR</dt><dd>6 bench, 2 IR slots</dd>
+      <dt>Bonus wins — The Mitch Rule</dt><dd><strong>On</strong> — each week you also win/lose against the league median, so you can go 2-0, 1-1, or 0-2 (cuts down on schedule luck)</dd>
+      <dt>Waivers</dt><dd>FAAB (Free Agent Budget), $100 for the season, 1-day waiver period; budget order resets weekly to inverse standings</dd>
+      <dt>Trades</dt><dd>No limit, no review; deadline <strong>Dec 2, 2026</strong></dd>
+      <dt>Draft</dt><dd>Snake, 90 sec/pick, order set manually by the commissioner; no draft-pick trading</dd>
+      <dt>Lineups</dt><dd>Lock individually at each player's kickoff</dd>
+      <dt>Regular season</dt><dd>14 weeks (Weeks 1–14); matchup tiebreaker = most bench points</dd>
+      <dt>Playoffs</dt><dd>6 teams, Weeks 15–17 (1 week per round), no reseeding; seeding tiebreaker = total points for</dd>
+      <dt>Consolation</dt><dd>Consolation ladder on; eliminated teams locked from transactions in the playoffs</dd>
+    </dl>
+  </section>
+
+  <section id="teams">
+    <h2><span class="num">7</span> The Teams</h2>
+    <p class="lede">Ten teams. One destiny. <em>(Team names may change.)</em></p>
+    <div class="teams">
+      <div class="team"><div class="tn">3Peat Dynasty</div><div class="tm">Manager: Mikle South</div></div>
+      <div class="team spot"><div class="tn">Baby's Got Dak</div><div class="tm">Manager: Adam Dent</div></div>
+      <div class="team"><div class="tn">Black Hell Death</div><div class="tm">Manager: Mike Lowe</div></div>
+      <div class="team"><div class="tn">The Pink Nightmare</div><div class="tm">Manager: Blake Johnson</div></div>
+      <div class="team"><div class="tn">Clueless</div><div class="tm">Manager: Evan Johnson</div></div>
+      <div class="team"><div class="tn">Dent Bringing Dubs</div><div class="tm">Manager: Bob Dent</div></div>
+      <div class="team"><div class="tn">Tecmo Superteam</div><div class="tm">Manager: Mitch Misbach</div></div>
+      <div class="team"><div class="tn">Silence of the Lamb</div><div class="tm">Manager: Timothy Dent</div></div>
+      <div class="team"><div class="tn">Rowberry' Rascals</div><div class="tm">Manager: Ryan Rowberry</div></div>
+      <div class="team"><div class="tn">King James Version</div><div class="tm">Manager: James Fuller</div></div>
+    </div>
+  </section>
+
+  <section id="dates">
+    <h2><span class="num">8</span> Key Dates</h2>
+    <ul class="dates">
+      <li><strong>Draft:</strong> September 3, 8pm EST — South House, 1847 Butlers Ln, Decatur. Out-of-towners will be sent a Zoom link.</li>
+      <li><strong>Regular season:</strong> NFL Weeks 1–14</li>
+      <li><strong>Trade deadline:</strong> December 2, 2026, 12:00 PM ET</li>
+      <li><strong>Playoffs:</strong> Weeks 15–17 (top 6 teams)</li>
+      <li><strong>Championship &amp; payouts:</strong> end of Week 17</li>
+    </ul>
+  </section>
+
+  <section id="fine">
+    <h2><span class="num">9</span> The Fine Print</h2>
+    <p class="lede">Edge cases so nobody argues on a Monday night.</p>
+    <p><strong>Ties.</strong> Any weekly mystery prize that ends in a tie is split evenly among those tied.</p>
+    <p><strong>Week 1.</strong> "Most Improved" isn't eligible in Week 1 (no prior week to improve on) — if the spinner lands there in Week 1, spin again.</p>
+    <p><strong>Rules that need a projection.</strong> A few rules ("David vs. Goliath," "Boom Goes the Dynamite," "Exactly As Planned") use ESPN's pregame projections, which ESPN shows on the matchup and box-score screens. The commissioner reads them off after the games.</p>
+    <p><strong>All-play rules.</strong> "Highway Robbery" and "Bad Beat" compare your score against all nine other teams that week — a one-minute check the commissioner does from the weekly scoreboard.</p>
+    <p><strong>Inactive lineups.</strong> ESPN does not auto-fix lineups, so an empty or injured slot just scores zero. The commissioner will drop a "set your lineups" reminder in the chat each week, but ultimately it's on each manager.</p>
+    <p><strong>Changing the rules.</strong> Anything in this constitution can be changed by a simple majority vote of the league — best done before the draft, not mid-season.</p>
+  </section>
+
+  <footer>
+    <div class="stripe"></div>
+    <p><strong>Freedom to Fantasy</strong> · 2026 Season · Commissioner's edition<br>
+    Set your lineup. Stay active. Have fun. Trade with Bob at your own risk. 🏈</p>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freedom to Fantasy — Draft Order Draw</title>
+<style>
+  :root{
+    --navy:#0f2547;--navy2:#173463;--red:#b3202c;--red2:#8f1922;--cream:#faf7ef;--paper:#fff;
+    --ink:#1c2433;--muted:#5b6a82;--gold:#c8a24a;--line:#e4ddcb;--chip:#f0ece0;--green:#1f7a44;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2{font-family:Georgia,"Times New Roman",serif;color:var(--navy);line-height:1.15}
+  .flagbar{height:6px;background:linear-gradient(90deg,var(--red) 0 33.3%,#fff 33.3% 66.6%,var(--navy) 66.6% 100%)}
+  header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;text-align:center;padding:28px 18px 24px;border-bottom:5px solid var(--gold)}
+  header .kick{letter-spacing:.24em;text-transform:uppercase;font-size:11px;color:var(--gold);margin:0 0 8px;font-weight:700}
+  header h1{color:#fff;margin:0;font-size:clamp(24px,6vw,38px)}
+  header p{color:#cdd8ea;margin:8px 0 0;font-size:14px}
+  .wrap{max-width:680px;margin:0 auto;padding:22px 18px 60px}
+
+  .setup{background:#fff3cd;border:1px solid var(--gold);border-radius:12px;padding:18px 20px;margin-bottom:20px}
+  .setup h3{margin:0 0 8px;color:var(--red2)}
+  .setup code{background:#fbeecb;padding:1px 5px;border-radius:4px;font-size:13px}
+
+  .status{text-align:center;font-size:13px;color:var(--muted);margin:0 0 16px}
+  .status b{color:var(--green)}
+  .status.off b{color:var(--red2)}
+
+  .board{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+  @media(max-width:520px){.board{grid-template-columns:1fr}}
+  .slot{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .slot .pk{font-family:Georgia,serif;font-weight:700;color:#fff;background:var(--navy);min-width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .slot .who{font-size:14px}
+  .slot .who .tn{font-weight:700;color:var(--navy)}
+  .slot .who .mg{font-size:12px;color:var(--muted)}
+  .slot.open{border-style:dashed;opacity:.7}
+  .slot.open .pk{background:#c3ccda}
+  .slot.open .who{color:var(--muted);font-style:italic}
+  .slot.just{border-color:var(--gold);background:#fff9ec;animation:flash .8s ease}
+  @keyframes flash{from{background:#fdeec2}to{background:#fff9ec}}
+
+  .controls{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:18px}
+  label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 5px}
+  select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff;color:var(--ink);font-family:inherit;margin-bottom:14px}
+  select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,162,74,.2)}
+
+  .reel-shell{background:var(--navy);border-radius:16px;padding:8px;margin-bottom:14px}
+  .window{height:96px;overflow:hidden;border-radius:12px;background:#0b1c38;position:relative;border:2px solid var(--gold)}
+  .marker{position:absolute;top:50%;left:0;right:0;height:48px;transform:translateY(-50%);border-top:2px solid rgba(200,162,74,.5);border-bottom:2px solid rgba(200,162,74,.5);background:rgba(200,162,74,.07);z-index:1;pointer-events:none}
+  .strip{will-change:transform}
+  .cell{height:48px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Georgia,serif;font-size:30px;font-weight:700;opacity:.5}
+  .cell.hot{opacity:1;color:var(--gold)}
+
+  button.spin{width:100%;padding:15px;border:none;border-radius:12px;cursor:pointer;background:var(--red);color:#fff;font-size:18px;font-weight:800;letter-spacing:.03em;font-family:Georgia,serif;box-shadow:0 6px 16px rgba(179,32,44,.3);transition:.15s}
+  button.spin:hover{background:var(--red2)}
+  button.spin:disabled{background:#9aa4b5;cursor:not-allowed;box-shadow:none}
+  .msg{text-align:center;font-size:14px;margin-top:12px;min-height:20px}
+  .msg.err{color:var(--red2);font-weight:700}
+  .msg.ok{color:var(--green);font-weight:700}
+
+  .done{display:none;background:#fff;border:1px solid var(--gold);border-left:6px solid var(--gold);border-radius:14px;padding:20px;margin-bottom:18px}
+  .done.show{display:block}
+  .done h2{margin:0 0 10px}
+  .done ol{margin:0 0 14px;padding-left:22px}
+  .done li{margin-bottom:4px}
+  button.copy{width:100%;padding:12px;border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer}
+  button.copy.ok{background:var(--green);border-color:var(--green)}
+
+  .note{font-size:12px;color:var(--muted);text-align:center;margin-top:20px;line-height:1.6}
+  .reset{margin-top:14px;text-align:center}
+  .reset a{color:#b0b7c2;font-size:12px;cursor:pointer;text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="flagbar"></div>
+<header>
+  <p class="kick">★ Freedom to Fantasy ★</p>
+  <h1>Draft Order Draw</h1>
+  <p>Pick your team, spin once, and claim your slot. First come, first served.</p>
+</header>
+
+<div class="wrap">
+
+  <div class="setup" id="setup" hidden>
+    <h3>⚙️ One-time setup needed</h3>
+    <p>This wheel needs a free Firebase connection so everyone's spins sync live. Paste your Firebase config into the <code>firebaseConfig</code> block near the top of this file's <code>&lt;script&gt;</code>, then re-upload. (Full steps are in the chat where you got this file.)</p>
+  </div>
+
+  <p class="status off" id="status">Connecting…</p>
+
+  <div class="board" id="board"></div>
+
+  <div class="controls" id="controls">
+    <label for="teamSel">I am (pick your team)</label>
+    <select id="teamSel"><option value="">— choose your team —</option></select>
+
+    <div class="reel-shell">
+      <div class="window"><div class="marker"></div><div class="strip" id="strip"></div></div>
+    </div>
+    <button class="spin" id="spinBtn" disabled>🎡 SPIN FOR MY PICK</button>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <div class="done" id="done">
+    <h2>🏆 Draft order is locked!</h2>
+    <ol id="finalList"></ol>
+    <button class="copy" id="copyBtn">📋 Copy the final order</button>
+  </div>
+
+  <div class="reset"><a id="resetLink">Reset draw (commissioner)</a></div>
+
+  <p class="note">
+    Everyone opens this same link. When a slot is taken it disappears for all — the spin can't hand two people the same pick.<br>
+    <b>Freedom to Fantasy</b> · 2026 · <a href="index.html">League Constitution</a>
+  </p>
+</div>
+
+<!-- Firebase (loads from Google's CDN; fine on GitHub Pages / any host) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<script>
+  /* ============================================================
+     STEP 1 — paste your Firebase config between the braces below.
+     (Firebase console → Project settings → "Your apps" → Config)
+     Keep the quotes. Leave RESET_CODE as-is or change it.
+     ============================================================ */
+  const firebaseConfig = {
+    apiKey: "AIzaSyA4TYFz_pK-ZgsxGPhMw77AYVPgcZEZ3VQ",
+    authDomain: "draft-dodgers.firebaseapp.com",
+    databaseURL: "https://draft-dodgers-default-rtdb.firebaseio.com",
+    projectId: "draft-dodgers",
+    storageBucket: "draft-dodgers.firebasestorage.app",
+    messagingSenderId: "757652996962",
+    appId: "1:757652996962:web:92fe4b4d822ac9de88623b"
+  };
+  const RESET_CODE = "gators";     // commissioner types this to reset the draw
+  const DRAW_PATH  = "draft2026";  // change per season to start fresh
+  /* ============================================================ */
+
+  const TEAMS = [
+    {team:"3Peat Dynasty",       mgr:"Mikle South"},
+    {team:"Baby's Got Dak",      mgr:"Adam Dent"},
+    {team:"Black Hell Death",    mgr:"Mike Lowe"},
+    {team:"The Pink Nightmare",  mgr:"Blake Johnson"},
+    {team:"Clueless",            mgr:"Evan Johnson"},
+    {team:"Dent Bringing Dubs",  mgr:"Bob Dent"},
+    {team:"Tecmo Superteam",     mgr:"Mitch Misbach"},
+    {team:"Silence of the Lamb", mgr:"Timothy Dent"},
+    {team:"Rowberry' Rascals",   mgr:"Ryan Rowberry"},
+    {team:"King James Version",  mgr:"James Fuller"}
+  ];
+  const N = TEAMS.length;
+  const mgrOf = t => (TEAMS.find(x=>x.team===t)||{}).mgr || "";
+
+  const $ = id => document.getElementById(id);
+  const boardEl=$('board'), statusEl=$('status'), teamSel=$('teamSel'),
+        spinBtn=$('spinBtn'), msg=$('msg'), strip=$('strip'), doneEl=$('done');
+  let ref=null, boardState={}, spinning=false, myLastSlot=null;
+
+  const configured = !String(firebaseConfig.apiKey).startsWith("PASTE");
+
+  if(!configured){
+    $('setup').hidden=false;
+    statusEl.innerHTML='Not connected — <b>setup needed</b>';
+    renderBoard({}); // show empty board as a preview
+  } else {
+    try{
+      firebase.initializeApp(firebaseConfig);
+      ref = firebase.database().ref(DRAW_PATH);
+      ref.on('value', snap=>{ boardState = snap.val() || {}; onState(); }, err=>{
+        statusEl.className='status off'; statusEl.innerHTML='Connection error — check your Firebase config &amp; database rules.';
+      });
+      // connection indicator
+      firebase.database().ref('.info/connected').on('value', s=>{
+        const on=s.val()===true;
+        statusEl.className='status'+(on?'':' off');
+        statusEl.innerHTML= on ? 'Live &amp; synced — <b>everyone sees the same board</b>' : 'Reconnecting…';
+      });
+    }catch(e){
+      $('setup').hidden=false; statusEl.innerHTML='Not connected — <b>setup needed</b>'; renderBoard({});
+    }
+  }
+
+  function onState(){
+    renderBoard(boardState);
+    fillTeamDropdown();
+    const filled=Object.keys(boardState).length;
+    if(filled>=N){ showDone(); } else { doneEl.classList.remove('show'); }
+  }
+
+  function renderBoard(state){
+    boardEl.innerHTML='';
+    for(let p=1;p<=N;p++){
+      const team=state[p];
+      const d=document.createElement('div');
+      d.className='slot'+(team?'':' open')+(p===myLastSlot?' just':'');
+      d.innerHTML='<div class="pk">'+p+'</div>'+
+        (team
+          ? '<div class="who"><div class="tn">'+team+'</div><div class="mg">'+mgrOf(team)+'</div></div>'
+          : '<div class="who">— open —</div>');
+      boardEl.appendChild(d);
+    }
+  }
+
+  function drawnTeams(){ return Object.values(boardState); }
+  function openSlots(){ const taken=Object.keys(boardState).map(Number); const o=[]; for(let p=1;p<=N;p++) if(!taken.includes(p)) o.push(p); return o; }
+
+  function fillTeamDropdown(){
+    const cur=teamSel.value;
+    const drawn=drawnTeams();
+    teamSel.innerHTML='<option value="">— choose your team —</option>';
+    TEAMS.forEach(t=>{
+      if(drawn.includes(t.team)) return;
+      const o=document.createElement('option'); o.value=t.team; o.textContent=t.team+' — '+t.mgr; teamSel.appendChild(o);
+    });
+    if([...teamSel.options].some(o=>o.value===cur)) teamSel.value=cur;
+    spinBtn.disabled = !(configured && teamSel.value && !spinning);
+  }
+
+  teamSel.addEventListener('change', ()=>{ spinBtn.disabled=!(configured && teamSel.value && !spinning); msg.textContent=''; });
+
+  function buildStrip(finalNum){
+    const cells=[]; for(let i=0;i<32;i++) cells.push(1+Math.floor(Math.random()*N));
+    cells.push(finalNum);
+    strip.innerHTML='';
+    cells.forEach((n,i)=>{ const c=document.createElement('div'); c.className='cell'+(i===cells.length-1?' hot':''); c.textContent=n; strip.appendChild(c); });
+    return cells.length;
+  }
+  function animateTo(num, cb){
+    const count=buildStrip(num), cellH=48, center=48, finalY=-((count-1)*cellH)+center;
+    strip.style.transition='none'; strip.style.transform='translateY('+center+'px)'; void strip.offsetHeight;
+    strip.style.transition='transform 3s cubic-bezier(.12,.66,.16,1)'; strip.style.transform='translateY('+finalY+'px)';
+    setTimeout(cb,3100);
+  }
+
+  spinBtn.addEventListener('click', ()=>{
+    if(!ref || spinning) return;
+    const myTeam=teamSel.value; if(!myTeam) return;
+    spinning=true; spinBtn.disabled=true; msg.className='msg'; msg.textContent='Spinning…';
+
+    // Atomic reservation: pick a random open slot inside a transaction so
+    // two people can never land on the same pick.
+    ref.transaction(current=>{
+      current = current || {};
+      if(Object.values(current).includes(myTeam)) return; // team already drawn -> abort
+      const taken=Object.keys(current).map(Number); const open=[];
+      for(let p=1;p<=N;p++) if(!taken.includes(p)) open.push(p);
+      if(!open.length) return; // full
+      const slot=open[Math.floor(Math.random()*open.length)];
+      current[slot]=myTeam;
+      return current;
+    }, (err, committed, snap)=>{
+      if(err){ spinning=false; msg.className='msg err'; msg.textContent='Network hiccup — try again.'; fillTeamDropdown(); return; }
+      if(!committed){
+        spinning=false; msg.className='msg err';
+        msg.textContent='That team was already drawn (or the draw is full). Pick another team.';
+        fillTeamDropdown(); return;
+      }
+      const val=snap.val()||{};
+      let slot=null; for(const k in val){ if(val[k]===myTeam) slot=Number(k); }
+      animateTo(slot, ()=>{
+        spinning=false; myLastSlot=slot; renderBoard(boardState);
+        msg.className='msg ok'; msg.textContent='🎉 '+myTeam+' drew pick #'+slot+'!';
+        fillTeamDropdown();
+      });
+    });
+  });
+
+  function showDone(){
+    doneEl.classList.add('show');
+    const ol=$('finalList'); ol.innerHTML='';
+    for(let p=1;p<=N;p++){ const t=boardState[p]; const li=document.createElement('li'); li.innerHTML='<b>'+t+'</b> — '+mgrOf(t); ol.appendChild(li); }
+  }
+  $('copyBtn').addEventListener('click',()=>{
+    let txt='🏈 FREEDOM TO FANTASY — 2026 DRAFT ORDER\n\n';
+    for(let p=1;p<=N;p++) txt+=p+'. '+boardState[p]+' — '+mgrOf(boardState[p])+'\n';
+    txt+='\n(Snake draft — order reverses each round.)';
+    const b=$('copyBtn');
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(()=>{b.classList.add('ok');b.textContent='✓ Copied!';});}
+    else{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');b.classList.add('ok');b.textContent='✓ Copied!';}catch(e){alert(txt);}document.body.removeChild(ta);}
+  });
+
+  $('resetLink').addEventListener('click',()=>{
+    if(!ref){ alert('Not connected.'); return; }
+    const code=prompt('Commissioner reset — this clears ALL draw results for everyone. Type the reset code to confirm:');
+    if(code===null) return;
+    if(code!==RESET_CODE){ alert('Wrong code — nothing changed.'); return; }
+    ref.remove().then(()=>{ myLastSlot=null; msg.className='msg'; msg.textContent='Draw reset.'; });
+  });
+
+  // initial preview render
+  renderBoard({}); fillTeamDropdown();
+</script>
+</body>
+</html>

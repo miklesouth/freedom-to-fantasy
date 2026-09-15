@@ -106,7 +106,7 @@
     <h2>Money board</h2>
     <p class="lede">Weekly pot winnings so far. Ties split the $10 evenly.</p>
     <div class="scroll"><table>
-      <thead><tr><th></th><th>Manager</th><th class="num">Weeks won</th><th class="num">Won</th></tr></thead>
+      <thead><tr><th></th><th>Team</th><th class="num">Weeks won</th><th class="num">Won</th></tr></thead>
       <tbody id="board"></tbody>
     </table></div>
   </section>
@@ -147,9 +147,23 @@ const WEEKLY = 10, LAST_WEEK = 14;
 const ANCHOR_MS = 1789434900000, WEEK_MS = 604800000, DST_WEEK = 8;
 const openAt = w => ANCHOR_MS + (w-1)*WEEK_MS + (w>=DST_WEEK?3600000:0);
 
-/* Optional roster: ["Team or manager name", "Manager"]. Leave empty and the
-   money board lists only the names that have won so far. */
-const TEAMS = [];
+const TEAMS = [
+  ["The masked druggist","Greg South"],
+  ["Arrakis Rampagers","Rob White"],
+  ["Mikle's Magnificent Team","Mikle South"],
+  ["Whole Ladd of Love","Joel Pierson"],
+  ["Eat fish","Emil Pierson"],
+  ["Gary Indiana Bears","Braden Pierson"],
+  ["Fences Make Good Nabers","David Robison"],
+  ["Sturm und Drang","Mikle South"],
+  ["Bang Bang","Darrick Sugawara"],
+  ["Justin's Team","Justin Kidman"]
+];
+/* A winner may be entered as a team name, or as a manager name when that
+   manager has only one team (Mikle South has two, so use the team name). */
+const BY_MGR = {};
+TEAMS.forEach(([t,m]) => { BY_MGR[m] = BY_MGR[m] ? null : t; });
+const resolve = n => TEAMS.some(([t]) => t === n) ? n : (BY_MGR[n] || n);
 
 let spins = {}, results = {}, loadErr = false;
 const $ = id => document.getElementById(id);
@@ -167,7 +181,7 @@ function render(){
 
   for (let w = 1; w <= LAST_WEEK; w++){
     const r = results[w] || {};
-    const winners = Array.isArray(r.winners) ? r.winners.filter(Boolean) : [];
+    const winners = Array.isArray(r.winners) ? r.winners.filter(Boolean).map(resolve) : [];
     const spin = spins[w];
     const ruleName = spin ? spin.n : r.rule;
     const ruleDesc = spin ? spin.d : '';

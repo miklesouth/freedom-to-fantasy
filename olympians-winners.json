@@ -1,9 +1,9 @@
 {
-  "_howto": "Add one entry per week once the Monday night game ends. 'winners' is a list of names (spell each person the same way every week); list several for a tie (the $10 splits evenly). 'rule' is optional: the page reads it from the spinner automatically. 'note' is optional.",
+  "_howto": "Add one entry per week once the Monday night game ends. 'winners' is a list of team names as spelled in TEAMS on olympians-pot.html (a manager's name also works if they have only one team); list several for a tie (the $10 splits evenly). 'rule' is optional: the page reads it from the spinner automatically. 'note' is optional.",
   "weeks": {
     "1": {
       "winners": [
-        "Emil Pierson"
+        "Eat fish"
       ],
       "rule": "Lucky 7s"
     }

@@ -1,0 +1,11 @@
+{
+  "_howto": "Add one entry per week once the Monday night game ends. 'winners' is a list of team names exactly as spelled in TEAMS on pot.html; list several for a tie (the $10 splits evenly). 'rule' is optional: the page reads it from the spinner automatically. 'note' is optional (e.g., the winning score).",
+  "weeks": {
+    "1": {
+      "winners": [
+        "Rowberry' Rascals"
+      ],
+      "rule": "Bad Beat"
+    }
+  }
+}

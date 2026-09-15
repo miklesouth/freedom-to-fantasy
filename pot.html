@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freedom to Fantasy — Weekly Pot Winners</title>
+<style>
+  :root{
+    --navy:#0f2547; --navy2:#173463; --red:#b3202c; --red2:#8f1922;
+    --cream:#faf7ef; --paper:#ffffff; --ink:#1c2433; --muted:#5b6a82;
+    --gold:#c8a24a; --line:#e4ddcb; --chip:#f0ece0; --green:#1f7a44;
+    --shadow:0 6px 24px rgba(15,37,71,.10);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--navy);line-height:1.15}
+  a{color:var(--red2)}
+  .flagbar{height:6px;width:100%;
+    background:linear-gradient(90deg,var(--red) 0 33.3%,#fff 33.3% 66.6%,var(--navy) 66.6% 100%)}
+  header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;text-align:center;
+    padding:30px 18px 26px;border-bottom:5px solid var(--gold)}
+  header .kick{letter-spacing:.24em;text-transform:uppercase;font-size:11px;color:var(--gold);margin:0 0 8px;font-weight:700}
+  header h1{color:#fff;margin:0;font-size:clamp(26px,6vw,40px)}
+  header p{color:#cdd8ea;margin:8px 0 0;font-size:14px}
+  header nav{margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  header nav a{color:#fff;text-decoration:none;font-size:13px;font-weight:600;
+    border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:5px 13px}
+  header nav a:hover{border-color:var(--gold)}
+
+  .wrap{max-width:760px;margin:0 auto;padding:24px 18px 60px}
+
+  .cards{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:22px}
+  .card{flex:1;min-width:140px;background:var(--navy);color:#fff;border-radius:14px;padding:16px 18px;text-align:center}
+  .card .big{font-family:Georgia,serif;font-size:32px;font-weight:700;line-height:1}
+  .card .lbl{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#b8c6dd;margin-top:8px}
+  .card.red{background:var(--red)} .card.red .lbl{color:#f4d3d6}
+  .card.gold{background:linear-gradient(135deg,var(--gold),#a9832f)} .card.gold .lbl{color:#fbf1d8}
+
+  section{background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    padding:20px 22px;margin:0 0 20px;box-shadow:var(--shadow)}
+  section h2{font-size:22px;margin:0 0 4px}
+  .lede{color:var(--muted);margin:0 0 14px;font-size:14px}
+
+  .scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th,td{text-align:left;padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--chip);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  tr:last-child td{border-bottom:none}
+  td.num,th.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  td.money{font-weight:700;color:var(--navy)}
+  .rank{color:var(--muted);font-weight:700;width:34px}
+  .mgr{display:block;font-size:12px;color:var(--muted)}
+  tr.zero td{color:#9aa3b2} tr.zero td.money{color:#9aa3b2;font-weight:400}
+  tr.lead td{background:#fff9ec}
+
+  .wkn{font-weight:700;color:var(--muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+  .rule b{color:var(--navy)}
+  .rule .d{display:block;font-size:12.5px;color:var(--muted)}
+  .win b{color:var(--ink)}
+  .win .wnote{display:block;font-size:12.5px;color:var(--muted)}
+  .split{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    background:#fdeaea;color:var(--red2);padding:1px 6px;border-radius:6px;margin-left:4px;vertical-align:1px}
+  .pending{color:#9aa3b2;font-style:italic}
+  tr.tally td{background:#fff9ec}
+  @media(max-width:560px){
+    section{padding:18px 16px}
+    #weeksTable thead{display:none}
+    #weeksTable tr{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:10px 0;border-bottom:1px solid var(--line)}
+    #weeksTable tr:last-child{border-bottom:none}
+    #weeksTable td{border:none;padding:0 4px}
+    #weeksTable td.wkn{grid-row:1;grid-column:1;padding-top:3px}
+    #weeksTable td.num{grid-row:1;grid-column:2;text-align:right}
+    #weeksTable td.rule{grid-column:1 / -1}
+    #weeksTable td.win{grid-column:1 / -1}
+    #weeksTable td.win:has(.pending:only-child){display:none}
+  }
+
+  .status{text-align:center;font-size:12.5px;color:var(--muted);margin:-6px 0 18px}
+  .status.err{color:var(--red2);font-weight:700}
+  .note{font-size:12.5px;color:var(--muted);text-align:center;margin-top:22px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="flagbar"></div>
+<header>
+  <p class="kick">★ Freedom to Fantasy ★ 2026 ★</p>
+  <h1>Weekly Pot Winners</h1>
+  <p>$10 a week, Weeks 1–14. The rule is spun at Monday night halftime; the winner is tallied after the game.</p>
+  <nav>
+    <a href="index.html">League Constitution</a>
+    <a href="mystery-wheel.html">Mystery Rule Spinner</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <p class="status" id="status">Loading…</p>
+
+  <div class="cards">
+    <div class="card gold"><div class="big" id="cPaid">$0</div><div class="lbl">Paid out</div></div>
+    <div class="card red"><div class="big" id="cLeft">$140</div><div class="lbl">Still up for grabs</div></div>
+    <div class="card"><div class="big" id="cWeeks">0/14</div><div class="lbl">Weeks decided</div></div>
+  </div>
+
+  <section>
+    <h2>Money board</h2>
+    <p class="lede">Weekly pot winnings so far. Ties split the $10 evenly.</p>
+    <div class="scroll"><table>
+      <thead><tr><th></th><th>Team</th><th class="num">Weeks won</th><th class="num">Won</th></tr></thead>
+      <tbody id="board"></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Week by week</h2>
+    <p class="lede">Rules come straight from the spinner. Winners are entered by the commissioner.</p>
+    <div class="scroll"><table id="weeksTable">
+      <thead><tr><th>Week</th><th>Mystery rule</th><th>Winner</th><th class="num">Prize</th></tr></thead>
+      <tbody id="weeks"></tbody>
+    </table></div>
+  </section>
+
+  <p class="note">
+    Something look wrong? Tell the commissioner in the league chat.<br>
+    Built for <b>Freedom to Fantasy</b> · 2026 · <a href="index.html">Back to the League Constitution</a>
+  </p>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<script>
+/* Same Firebase project and path as mystery-wheel.html (read-only here). */
+const firebaseConfig = {
+  apiKey: "AIzaSyA4TYFz_pK-ZgsxGPhMw77AYVPgcZEZ3VQ",
+  authDomain: "draft-dodgers.firebaseapp.com",
+  databaseURL: "https://draft-dodgers-default-rtdb.firebaseio.com",
+  projectId: "draft-dodgers",
+  storageBucket: "draft-dodgers.firebasestorage.app",
+  messagingSenderId: "757652996962",
+  appId: "1:757652996962:web:92fe4b4d822ac9de88623b"
+};
+const DB_PATH = "mystery2026";
+const WEEKLY = 10, LAST_WEEK = 14;
+
+/* Must match the spinner's schedule: Week 1 MNF halftime Mon Sep 14 2026 9:15 PM EDT. */
+const ANCHOR_MS = 1789434900000, WEEK_MS = 604800000, DST_WEEK = 8;
+const openAt = w => ANCHOR_MS + (w-1)*WEEK_MS + (w>=DST_WEEK?3600000:0);
+
+const TEAMS = [
+  ["3Peat Dynasty","Mikle South"],
+  ["Baby's Got Dak","Adam Dent"],
+  ["Black Hell Death","Mike Lowe"],
+  ["The Pink Nightmare","Blake Johnson"],
+  ["Clueless","Evan Johnson"],
+  ["Dent Bringing Dubs","Bob Dent"],
+  ["Tecmo Superteam","Mitch Misbach"],
+  ["Silence of the Lamb","Timothy Dent"],
+  ["Rowberry' Rascals","Ryan Rowberry"],
+  ["King James Version","James Fuller"]
+];
+
+let spins = {}, results = {}, loadErr = false;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = v => '$' + (Math.round(v*100) % 100 === 0 ? Math.round(v) : v.toFixed(2));
+const day = ms => new Date(ms).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+
+function render(){
+  const totals = {}, counts = {};
+  TEAMS.forEach(([t]) => { totals[t] = 0; counts[t] = 0; });
+  let paid = 0, decided = 0;
+  const unknown = new Set();
+  const rows = [];
+
+  for (let w = 1; w <= LAST_WEEK; w++){
+    const r = results[w] || {};
+    const winners = Array.isArray(r.winners) ? r.winners.filter(Boolean) : [];
+    const spin = spins[w];
+    const ruleName = spin ? spin.n : r.rule;
+    const ruleDesc = spin ? spin.d : '';
+
+    let ruleCell;
+    if (ruleName) ruleCell = `<b>${esc(ruleName)}</b>${ruleDesc ? `<span class="d">${esc(ruleDesc)}</span>` : ''}`;
+    else if (Date.now() < openAt(w)) ruleCell = `<span class="pending">Spin opens ${day(openAt(w))}</span>`;
+    else ruleCell = `<span class="pending">Not spun yet</span>`;
+
+    let winCell, prize = '';
+    if (winners.length){
+      decided++; paid += WEEKLY;
+      const share = WEEKLY / winners.length;
+      winners.forEach(t => {
+        if (t in totals){ totals[t] += share; counts[t] += 1; } else unknown.add(t);
+      });
+      winCell = winners.map(t => `<b>${esc(t)}</b>`).join(' &amp; ')
+        + (winners.length > 1 ? `<span class="split">split</span>` : '')
+        + (r.note ? `<span class="wnote">${esc(r.note)}</span>` : '');
+      prize = winners.length > 1 ? `${money(share)} each` : money(WEEKLY);
+    } else {
+      winCell = `<span class="pending">${ruleName ? 'Tally pending' : '—'}</span>`;
+    }
+    const tally = ruleName && !winners.length;
+    rows.push(`<tr${tally ? ' class="tally"' : ''}><td class="wkn">Wk ${w}</td><td class="rule">${ruleCell}</td><td class="win">${winCell}</td><td class="num money">${prize}</td></tr>`);
+  }
+  $('weeks').innerHTML = rows.join('');
+
+  const order = TEAMS.map(([t,m]) => ({t,m,v:totals[t],c:counts[t]}))
+    .sort((a,b) => b.v - a.v || b.c - a.c || a.t.localeCompare(b.t));
+  const top = order[0].v;
+  let rank = 0, prev = null;
+  $('board').innerHTML = order.map((o,i) => {
+    if (o.v !== prev){ rank = i + 1; prev = o.v; }
+    const cls = o.v === 0 ? 'zero' : (o.v === top ? 'lead' : '');
+    return `<tr class="${cls}"><td class="rank">${o.v ? rank : ''}</td><td><b>${esc(o.t)}</b><span class="mgr">${esc(o.m)}</span></td><td class="num">${o.c}</td><td class="num money">${money(o.v)}</td></tr>`;
+  }).join('');
+
+  $('cPaid').textContent = money(paid);
+  $('cLeft').textContent = money(WEEKLY*LAST_WEEK - paid);
+  $('cWeeks').textContent = `${decided}/${LAST_WEEK}`;
+
+  const st = $('status');
+  if (loadErr){ st.className = 'status err'; st.textContent = 'Couldn’t load the results file — try refreshing.'; }
+  else if (unknown.size){ st.className = 'status err'; st.textContent = 'Unrecognized team name in results: ' + [...unknown].join(', '); }
+  else { st.className = 'status'; st.textContent = 'Updated after each Monday night game.'; }
+}
+
+fetch('winners.json', {cache:'no-store'})
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(j => { results = (j && j.weeks) || {}; })
+  .catch(() => { loadErr = true; })
+  .finally(render);
+
+try{
+  firebase.initializeApp(firebaseConfig);
+  firebase.database().ref(DB_PATH).on('value', s => { spins = s.val() || {}; render(); });
+}catch(e){ /* rules still show if entered in winners.json */ }
+
+render();
+</script>
+</body>
+</html>

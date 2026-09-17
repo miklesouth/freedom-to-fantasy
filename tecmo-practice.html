@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Freedom to Fantasy — Mystery Rule Spinner</title>
+<title>Freedom to Fantasy — 8-Bit Practice Wheel</title>
 <style>
   :root{
     --navy:#0f2547; --navy2:#173463; --red:#b3202c; --red2:#8f1922;
@@ -168,38 +168,23 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
 </head>
-<body>
+<style>
+  body.tecmo .practice{background:#fcfc00;color:#000;text-align:center;font-size:9px;line-height:2;padding:10px 12px;margin-bottom:18px;border:4px solid #fcfcfc}
+  body.tecmo .practice b{color:#a81000}
+  body.tecmo .count{text-align:center;font-size:9px;color:#bcbcbc;line-height:2;margin-top:10px}
+  body.tecmo .result .stamp{border-top:4px dotted #7c7c7c}
+</style>
+<body class="tecmo">
 <div class="flagbar"></div>
 <header>
-  <p class="kick" id="kick">★ Freedom to Fantasy ★</p>
-  <h1 id="title">Mystery Rule Spinner</h1>
-  <p id="tagline">One spin per week, at Monday night halftime. Locked forever the moment it lands.</p>
+  <p class="kick">★ Freedom to Fantasy ★ Practice Mode ★</p>
+  <h1>8-Bit Practice Wheel</h1>
+  <p>Spin as often as you like. Nothing here counts.</p>
   <button class="sound" id="soundBtn" type="button">SOUND: ON</button>
 </header>
 
 <div class="wrap">
-
-  <div class="setup" id="setup" hidden>
-    <h3>⚙️ Not connected to Firebase</h3>
-    <p>Paste your Firebase config into the <code>firebaseConfig</code> block in this file's <code>&lt;script&gt;</code>, and install the database rules from the chat where you got this file. Until then the wheel is display-only.</p>
-  </div>
-
-  <p class="status off" id="status">Connecting…</p>
-
-  <div class="windowbar" id="windowbar">
-    <span class="dot"></span><span id="windowText">Checking the schedule…</span>
-  </div>
-
-  <div class="controls">
-    <div class="field">
-      <label for="week">Week</label>
-      <select id="week"></select>
-    </div>
-    <div class="field">
-      <label for="who">Spun by</label>
-      <input id="who" type="text" placeholder="Your team name" autocomplete="off">
-    </div>
-  </div>
+  <div class="practice"><b>PRACTICE ONLY.</b> Nothing is saved and nobody wins money here. The real Week 2 spin opens Monday night halftime on the <a href="mystery-wheel.html" style="color:#0058f8">Mystery Rule Spinner</a>.</div>
 
   <div class="reel-shell">
     <div class="window">
@@ -207,23 +192,15 @@
       <div class="strip" id="strip"></div>
     </div>
   </div>
-  <button class="spin" id="spinBtn" disabled>🎡 SPIN THE WHEEL</button>
-  <div class="lockmsg" id="lockmsg"></div>
+  <button class="spin" id="spinBtn">▶ PRESS START</button>
+  <p class="count" id="count">Practice spins: 0</p>
 
   <div class="result" id="result">
-    <div class="tag" id="rTag">This week's mystery rule</div>
+    <div class="tag">Practice result — doesn't count</div>
     <h2 id="rName"></h2>
     <p class="desc" id="rDesc"></p>
     <div class="determine" id="rDet"></div>
-    <div class="stamp" id="rStamp"></div>
-    <div class="btnrow">
-      <button class="copy" id="copyBtn">📋 Copy announcement</button>
-    </div>
-  </div>
-
-  <div class="board">
-    <h3>🗓️ Season board</h3>
-    <div id="boardList"></div>
+    <div class="stamp">Spin again as many times as you want.</div>
   </div>
 
   <details>
@@ -232,40 +209,12 @@
   </details>
 
   <p class="note">
-    Ties split the pot. Each week's result is written once to a shared database and cannot be changed or deleted
-    from this page by anyone — the wheel is genuinely one spin per week.<br>
-    Built for <b>Freedom to Fantasy</b> · 2026 · <a href="tecmo-practice.html">8-bit practice wheel</a> · <a href="index.html">Back to the League Constitution</a>
+    Practice wheel draws from every rule, including ones already used this season.<br>
+    <a href="mystery-wheel.html">Real Mystery Rule Spinner</a> · <a href="pot.html">Weekly pot winners</a> · <a href="index.html">League Constitution</a>
   </p>
 </div>
 
-<!-- Firebase (Google CDN; works on GitHub Pages, Netlify, any static host) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
 <script>
-/* ==================================================================
-   CONFIG — same Firebase project as the draft wheel, different path.
-   ================================================================== */
-const firebaseConfig = {
-  apiKey: "AIzaSyA4TYFz_pK-ZgsxGPhMw77AYVPgcZEZ3VQ",
-  authDomain: "draft-dodgers.firebaseapp.com",
-  databaseURL: "https://draft-dodgers-default-rtdb.firebaseio.com",
-  projectId: "draft-dodgers",
-  storageBucket: "draft-dodgers.firebasestorage.app",
-  messagingSenderId: "757652996962",
-  appId: "1:757652996962:web:92fe4b4d822ac9de88623b"
-};
-const DB_PATH = "mystery2026";   // change per season to start fresh
-
-/* Week 1 MNF halftime: Mon Sep 14 2026, 9:15 PM EDT.
-   Weeks run every 7 days; +1 hour from week 8 on, because ET leaves
-   daylight time on Nov 1 2026. Keeps all 14 windows at 9:15 PM local.
-   THESE MUST MATCH THE DATABASE RULES EXACTLY. */
-const ANCHOR_MS = 1789434900000;
-const WEEK_MS   = 604800000;
-const DST_WEEK  = 8;
-const LAST_WEEK = 14;
-/* ================================================================== */
-
 const RULES = [
   {n:"The Heartbreaker", d:"Highest score among teams that LOST their matchup.", det:"Look at every losing team this week; the one with the most points wins."},
   {n:"Lucky Duck Award", d:"Lowest score among teams that WON their matchup.", det:"Look at every winning team this week; the one with the fewest points wins."},
@@ -293,63 +242,9 @@ const RULES = [
 ];
 
 const $ = id => document.getElementById(id);
-const strip=$('strip'), weekSel=$('week'), result=$('result'), spinBtn=$('spinBtn'),
-      copyBtn=$('copyBtn'), lockmsg=$('lockmsg'), statusEl=$('status'),
-      whoIn=$('who'), windowbar=$('windowbar'), windowText=$('windowText');
+const strip=$('strip'), spinBtn=$('spinBtn'), result=$('result');
+let spinning=false, spins=0, soundOn=true, actx=null;
 
-let ref=null, state={}, spinning=false, connected=false;
-
-/* ---------- time windows ---------- */
-function openAt(w){ return ANCHOR_MS + (w-1)*WEEK_MS + (w>=DST_WEEK?3600000:0); }
-function currentWeek(){
-  const now=Date.now();
-  if(now < openAt(1)) return null;
-  for(let w=1; w<=LAST_WEEK; w++){
-    if(now >= openAt(w) && now < openAt(w+1)) return w;
-  }
-  return null;
-}
-function fmt(ms){
-  return new Date(ms).toLocaleString(undefined,
-    {weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
-}
-
-/* ---------- firebase ---------- */
-const configured = !String(firebaseConfig.apiKey).startsWith("PASTE");
-if(!configured){
-  $('setup').hidden=false;
-  statusEl.innerHTML='Not connected — <b>setup needed</b>';
-} else {
-  try{
-    firebase.initializeApp(firebaseConfig);
-    ref = firebase.database().ref(DB_PATH);
-    ref.on('value', snap => { state = snap.val() || {}; render(); },
-      () => { statusEl.className='status off';
-              statusEl.innerHTML='Read error — <b>check the database rules</b>'; });
-    firebase.database().ref('.info/connected').on('value', s=>{
-      connected = s.val()===true;
-      statusEl.className='status'+(connected?'':' off');
-      statusEl.innerHTML = connected
-        ? 'Live &amp; synced — <b>everyone sees the same result</b>'
-        : 'Reconnecting…';
-      render();
-    });
-  }catch(e){
-    $('setup').hidden=false;
-    statusEl.innerHTML='Not connected — <b>setup needed</b>';
-  }
-}
-
-/* ---------- 8-bit edition ----------
-   On automatically until the Week 2 window closes (Mon Sep 28 2026, 9:15 PM ET),
-   then the page reverts by itself. Add ?tecmo=1 to preview it, ?tecmo=0 to turn it off. */
-const TECMO = (() => {
-  const q = new URLSearchParams(location.search).get('tecmo');
-  if (q === '1') return true;
-  if (q === '0') return false;
-  return Date.now() < openAt(3);
-})();
-let soundOn = true, actx = null;
 function tone(freq, start, dur, vol){
   const o = actx.createOscillator(), g = actx.createGain();
   o.type = 'square'; o.frequency.value = freq;
@@ -359,7 +254,7 @@ function tone(freq, start, dur, vol){
   o.start(start); o.stop(start + dur + 0.02);
 }
 function spinSound(ms){
-  if (!TECMO || !soundOn) return;
+  if (!soundOn) return;
   try{
     actx = actx || new (window.AudioContext || window.webkitAudioContext)();
     actx.resume && actx.resume();
@@ -371,32 +266,7 @@ function spinSound(ms){
     [523, 659, 784, 1047].forEach((f, i) => tone(f, t0 + T + i*0.11, i === 3 ? 0.45 : 0.1, 0.08));
   }catch(e){}
 }
-if (TECMO){
-  document.body.classList.add('tecmo');
-  $('kick').textContent = '★ Week 2 · 8-bit edition ★';
-  $('title').textContent = 'Mystery Rule Spinner';
-  $('tagline').textContent = 'Guest spinner: Tecmo Superteam. One spin. No continues.';
-  const sb = $('soundBtn');
-  sb.addEventListener('click', () => { soundOn = !soundOn; sb.textContent = 'SOUND: ' + (soundOn ? 'ON' : 'OFF'); });
-}
 
-/* ---------- rule pool ---------- */
-function usedIdx(){
-  const s={};
-  Object.keys(state).forEach(k=>{ const r=state[k]; if(r&&typeof r.idx==='number') s[r.idx]=true; });
-  return s;
-}
-function eligible(week){
-  const used=usedIdx(), out=[];
-  for(let i=0;i<RULES.length;i++){
-    if(RULES[i].notWk1 && week===1) continue;
-    if(used[i]) continue;
-    out.push(i);
-  }
-  return out;
-}
-
-/* ---------- reel ---------- */
 function buildStrip(finalIdx){
   const cells=[];
   for(let i=0;i<40;i++) cells.push(RULES[Math.floor(Math.random()*RULES.length)].n);
@@ -414,155 +284,33 @@ function animateTo(idx, cb){
   strip.style.transition='none';
   strip.style.transform='translateY('+center+'px)';
   void strip.offsetHeight;
-  strip.style.transition = TECMO ? 'transform 3.4s steps(48,end)' : 'transform 3.4s cubic-bezier(.12,.66,.16,1)';
+  strip.style.transition='transform 3.4s steps(48,end)';
   strip.style.transform='translateY('+finalY+'px)';
   setTimeout(cb, 3550);
 }
-
-/* ---------- render ---------- */
-function render(){
-  if(spinning) return;
-  const sel=parseInt(weekSel.value,10);
-  const cur=currentWeek();
-  const rec=state[sel];
-
-  // window bar
-  if(cur===null){
-    windowbar.className='windowbar';
-    windowText.innerHTML = Date.now() < openAt(1)
-      ? 'Season opens <b>'+fmt(openAt(1))+'</b>'
-      : 'Season complete — all 14 weeks are in the books.';
-  } else {
-    windowbar.className='windowbar live';
-    windowText.innerHTML = state[cur]
-      ? '<b>Week '+cur+'</b> is spun. Next spin opens <b>'+fmt(openAt(cur+1))+'</b>'
-      : '<b>Week '+cur+'</b> is open now — closes '+fmt(openAt(cur+1));
-  }
-
-  // spin button
-  let can=false, why='';
-  if(!configured || !connected){ why='Not connected.'; }
-  else if(cur===null){ why=''; }
-  else if(sel!==cur){ why='Week '+sel+' isn\u2019t the open week. Switch to week '+cur+' to spin.'; }
-  else if(rec){ why='🔒 Locked in by '+rec.by+'.'; }
-  else if(!whoIn.value.trim()){ why='Enter your team name to spin.'; }
-  else { can=true; }
-
-  spinBtn.disabled=!can;
-  spinBtn.textContent = rec && sel===cur ? '🔒 Week '+sel+' locked in'
-                      : cur===null ? '🎡 SPIN THE WHEEL'
-                      : sel!==cur ? '🔒 Week '+sel+' is closed'
-                      : (TECMO ? '▶ PRESS START' : '🎡 SPIN THE WHEEL');
-  if(!lockmsg.classList.contains('err')) lockmsg.textContent=why;
-
-  if(rec) showResult(rec, sel); else result.classList.remove('show');
-  renderBoard(cur);
-  markList();
-}
-
-function showResult(rec, week){
-  $('rTag').textContent='🔒 Week '+week+' mystery rule';
-  $('rName').textContent=rec.n;
-  $('rDesc').textContent=rec.d;
-  $('rDet').innerHTML='<b>How the winner is decided:</b> '+rec.det;
-  $('rStamp').textContent='Spun by '+rec.by+' · '+fmt(rec.ts)+' · locked, cannot be re-spun';
-  result.classList.add('show');
-  copyBtn.classList.remove('ok'); copyBtn.textContent='📋 Copy announcement';
-}
-
-function renderBoard(cur){
-  const box=$('boardList'); box.innerHTML='';
-  for(let w=1; w<=LAST_WEEK; w++){
-    const rec=state[w];
-    const d=document.createElement('div');
-    d.className='wk'+(rec?'':' empty')+(w===cur?' now':'');
-    d.innerHTML='<div class="n">Week '+w+'</div><div class="r">'+
-      (rec ? '<b>'+rec.n+'</b><span class="by">'+rec.by+' · '+fmt(rec.ts)+'</span>'
-           : (w===cur ? 'open now' : 'opens '+fmt(openAt(w))))+'</div>';
-    box.appendChild(d);
-  }
-}
-function markList(){
-  const used=usedIdx();
-  document.querySelectorAll('#allRules .rl').forEach((el,i)=>{
-    el.classList.toggle('struck', !!used[i]);
-  });
-}
-
-/* ---------- the spin ---------- */
 function spin(){
-  if(!ref || spinning) return;
-  const week=parseInt(weekSel.value,10);
-  const by=whoIn.value.trim();
-  if(week!==currentWeek() || state[week] || !by) return;
-
-  if(TECMO && soundOn){ try{ actx = actx || new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
-  const pool=eligible(week);
-  if(!pool.length){ lockmsg.className='lockmsg err'; lockmsg.textContent='No rules left in the pool.'; return; }
-  const idx=pool[Math.floor(Math.random()*pool.length)];
-  const r=RULES[idx];
-
-  spinning=true; spinBtn.disabled=true;
-  lockmsg.className='lockmsg'; lockmsg.textContent='Locking it in…';
+  if(spinning) return;
+  spinning=true; spinBtn.disabled=true; spinBtn.textContent='SPINNING…';
   result.classList.remove('show');
-
-  // Write FIRST, animate second. If the tab closes mid-spin the result is
-  // already committed — no free re-roll.
-  ref.child(String(week)).set({
-    idx: idx, n: r.n, d: r.d, det: r.det,
-    by: by, week: week,
-    ts: firebase.database.ServerValue.TIMESTAMP
-  }).then(()=>{
-    lockmsg.textContent='';
-    spinSound(3400);
-    animateTo(idx, ()=>{ spinning=false; render(); });
-  }).catch(err=>{
-    spinning=false;
-    lockmsg.className='lockmsg err';
-    lockmsg.textContent = String(err && err.code)==='PERMISSION_DENIED'
-      ? 'Rejected by the database — this week is already spun, or the window is closed.'
-      : 'Network hiccup — nothing was recorded. Try again.';
-    setTimeout(()=>{ lockmsg.className='lockmsg'; render(); }, 4000);
+  if(soundOn){ try{ actx = actx || new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
+  const idx=Math.floor(Math.random()*RULES.length), r=RULES[idx];
+  spinSound(3400);
+  animateTo(idx, ()=>{
+    $('rName').textContent=r.n; $('rDesc').textContent=r.d;
+    $('rDet').innerHTML='<b>How the winner would be decided:</b> '+r.det;
+    result.classList.add('show');
+    spins++; $('count').textContent='Practice spins: '+spins;
+    spinning=false; spinBtn.disabled=false; spinBtn.textContent='▶ SPIN AGAIN';
   });
 }
-
-/* ---------- announcement ---------- */
-function announcement(week){
-  const r=state[week];
-  return '🏈 FREEDOM TO FANTASY — Week '+week+' Mystery Rule (spun by '+r.by+')\n\n'+
-         '🎡 '+r.n+'\n'+r.d+'\n\n'+
-         'How the $10 is decided: '+r.det+'\n\n'+
-         'Winner tallied after the Monday night game. Ties split the pot. Good luck!';
-}
-function copyText(txt,btn,okLabel){
-  const done=()=>{btn.classList.add('ok');btn.textContent=okLabel;};
-  const fb=()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
-    try{document.execCommand('copy');done();}catch(e){alert(txt);}document.body.removeChild(ta);};
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb);}else{fb();}
-}
-
-/* ---------- init ---------- */
-for(let w=1;w<=LAST_WEEK;w++){
-  const o=document.createElement('option'); o.value=w; o.textContent='Week '+w; weekSel.appendChild(o);
-}
-weekSel.value = currentWeek() || 1;
-
-RULES.forEach((r,i)=>{
-  const d=document.createElement('div'); d.className='rl'; d.dataset.i=i;
+RULES.forEach(r=>{
+  const d=document.createElement('div'); d.className='rl';
   d.innerHTML='<b>'+r.n+'</b> — '+r.d; $('allRules').appendChild(d);
 });
-
 spinBtn.addEventListener('click', spin);
-weekSel.addEventListener('change', ()=>{ lockmsg.className='lockmsg'; render(); });
-whoIn.addEventListener('input', render);
-copyBtn.addEventListener('click', ()=>{
-  const wk=parseInt(weekSel.value,10);
-  if(state[wk]) copyText(announcement(wk), copyBtn, '✓ Copied!');
-});
-
+const sb=$('soundBtn');
+sb.addEventListener('click', ()=>{ soundOn=!soundOn; sb.textContent='SOUND: '+(soundOn?'ON':'OFF'); });
 buildStrip(0); strip.style.transform='translateY(50px)';
-setInterval(()=>{ if(!spinning) render(); }, 30000);  // roll the window over on its own
-render();
 </script>
 </body>
 </html>

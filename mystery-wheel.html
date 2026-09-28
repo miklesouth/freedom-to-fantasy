@@ -105,68 +105,7 @@
   .rl.struck b{text-decoration:line-through}
   .note{font-size:12.5px;color:var(--muted);text-align:center;margin-top:22px;line-height:1.6}
 
-  /* ---------- 8-bit edition (Week 2 only; see TECMO below) ---------- */
-  body.tecmo{background:#000;color:#fcfcfc;font-family:"Press Start 2P",ui-monospace,monospace;
-    -webkit-font-smoothing:none;image-rendering:pixelated}
-  body.tecmo::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;
-    background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 2px,transparent 2px 4px)}
-  body.tecmo h1,body.tecmo h2,body.tecmo h3,body.tecmo summary,body.tecmo .cell{font-family:"Press Start 2P",ui-monospace,monospace}
-  body.tecmo *{border-radius:0!important;box-shadow:none!important}
-  body.tecmo .flagbar{height:8px;background:repeating-linear-gradient(90deg,#fcfcfc 0 8px,#00a800 8px 16px)}
-  body.tecmo header{background:#00a800;border-bottom:8px solid #fcfcfc;padding:26px 14px 22px;
-    background-image:repeating-linear-gradient(90deg,transparent 0 46px,rgba(252,252,252,.55) 46px 50px)}
-  body.tecmo header .kick{color:#fcfc00;font-size:9px;letter-spacing:.12em;line-height:1.8}
-  body.tecmo header h1{font-size:clamp(16px,4.6vw,26px);line-height:1.5;text-shadow:4px 4px 0 #000;letter-spacing:.02em}
-  body.tecmo header p{color:#fcfcfc;font-size:9px;line-height:2;text-shadow:2px 2px 0 #000}
-  body.tecmo .status,body.tecmo .lockmsg,body.tecmo .note{font-size:9px;line-height:2;color:#bcbcbc}
-  body.tecmo .status b{color:#58f898} body.tecmo .status.off b,body.tecmo .lockmsg.err{color:#f83800}
-  body.tecmo label{color:#fcfc00;font-size:8px;letter-spacing:.06em}
-  body.tecmo input,body.tecmo select{background:#000;color:#fcfcfc;border:4px solid #fcfcfc;font:10px "Press Start 2P",monospace;padding:10px}
-  body.tecmo .windowbar{background:#000;border:4px solid #fcfcfc;color:#fcfcfc;font-size:9px;line-height:1.9}
-  body.tecmo .windowbar b{color:#fcfc00}
-  body.tecmo .windowbar .dot{border-radius:0!important;background:#7c7c7c}
-  body.tecmo .windowbar.live .dot{background:#58f898;animation:blink 1s steps(1) infinite}
-  body.tecmo .windowbar.live{color:#fcfcfc}
-  body.tecmo .reel-shell{background:#fcfcfc;padding:4px}
-  body.tecmo .window{background:#00a800;border:4px solid #000;
-    background-image:repeating-linear-gradient(0deg,transparent 0 47px,rgba(252,252,252,.35) 47px 50px)}
-  body.tecmo .marker{border-top:4px solid #fcfc00;border-bottom:4px solid #fcfc00;background:rgba(0,0,0,.35)}
-  body.tecmo .cell{font-size:11px;font-weight:400;line-height:1.5;text-shadow:2px 2px 0 #000;opacity:.7}
-  body.tecmo .cell.hot{color:#fcfc00;opacity:1}
-  body.tecmo button.spin{background:#f83800;border:4px solid #fcfcfc;font:14px "Press Start 2P",monospace;padding:18px 10px;letter-spacing:0;line-height:1.5}
-  body.tecmo button.spin:not(:disabled){animation:blink 1.2s steps(1) infinite}
-  body.tecmo button.spin:hover{background:#a81000}
-  body.tecmo button.spin:disabled{background:#3c3c3c;color:#7c7c7c;border-color:#7c7c7c;animation:none}
-  body.tecmo .result{background:#000;border:4px solid #fcfcfc;color:#fcfcfc}
-  body.tecmo .result.show{animation:none}
-  body.tecmo .result .tag{color:#f83800;font-size:9px;line-height:1.8}
-  body.tecmo .result h2{color:#fcfc00;font-size:clamp(14px,4vw,20px);line-height:1.5}
-  body.tecmo .result .desc{font-size:10px;line-height:2;color:#fcfcfc}
-  body.tecmo .setup{background:#000;border:4px solid #f83800;color:#fcfcfc;font-size:9px;line-height:1.9}
-  body.tecmo .setup h3{color:#f83800;font-size:10px}
-  body.tecmo .setup p{font-size:9px;line-height:1.9}
-  body.tecmo .result .determine{background:#00a800;color:#fcfcfc;font-size:9px;line-height:2}
-  body.tecmo .result .stamp{color:#bcbcbc;font-size:8px;line-height:2;border-top:4px dotted #7c7c7c}
-  body.tecmo button.copy{background:#0058f8;border:4px solid #fcfcfc;font:9px "Press Start 2P",monospace;line-height:1.6}
-  body.tecmo button.copy.ok{background:#00a800}
-  body.tecmo .board,body.tecmo details{background:#000;border:4px solid #fcfcfc}
-  body.tecmo .board h3,body.tecmo summary{color:#fcfc00;font-size:11px;line-height:1.8}
-  body.tecmo .wk,body.tecmo .rl{font-size:9px;line-height:1.9;border-bottom:2px dotted #3c3c3c}
-  body.tecmo .wk .n{color:#bcbcbc;font-size:8px;flex-basis:74px}
-  body.tecmo .wk .r b,body.tecmo .rl b{color:#fcfcfc}
-  body.tecmo .wk .r .by{color:#7c7c7c;font-size:8px}
-  body.tecmo .wk.empty .r{color:#5c5c5c;font-style:normal}
-  body.tecmo .wk.now{background:#003800}
-  body.tecmo a{color:#58f898}
-  body.tecmo .sound{display:inline-block}
-  .sound{display:none;margin:12px auto 0;background:#000;color:#fcfcfc;border:4px solid #fcfcfc;
-    font:8px "Press Start 2P",monospace;padding:8px 10px;cursor:pointer}
-  @keyframes blink{50%{opacity:.55}}
-  @media (prefers-reduced-motion:reduce){body.tecmo *{animation:none!important}}
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
 </head>
 <body>
 <div class="flagbar"></div>
@@ -174,7 +113,6 @@
   <p class="kick" id="kick">★ Freedom to Fantasy ★</p>
   <h1 id="title">Mystery Rule Spinner</h1>
   <p id="tagline">One spin per week, at Monday night halftime. Locked forever the moment it lands.</p>
-  <button class="sound" id="soundBtn" type="button">SOUND: ON</button>
 </header>
 
 <div class="wrap">
@@ -279,7 +217,7 @@ const RULES = [
   {n:"David vs. Goliath", d:"Biggest upset versus ESPN's pregame projected margin.", det:"The winner that ESPN projected to lose by the most points."},
   {n:"Boom Goes the Dynamite", d:"Player who beats his ESPN projection by the most points.", det:"Compare each started player's actual score to his projection; biggest overage wins for that manager."},
   {n:"Exactly As Planned", d:"Team whose actual score lands closest to its ESPN projection.", det:"Smallest difference between a team's projected and actual total."},
-  {n:"Waiver Wire Wizard", d:"Highest-scoring started player who was added off waivers/FA this week.", det:"Among players picked up this week and started, the top scorer wins for that manager."},
+  {n:"Waiver Wire Wizard", d:"Highest-scoring started player who was added off the wire since last Monday night.", det:"Count any player added after last week's Monday night game ended and started in this week's lineup; the top scorer wins for that manager. Trade acquisitions don't count."},
   {n:"Should've Started Him", d:"Biggest point gap between a benched player and the starter at the same position.", det:"The manager who left the most points on the bench at one position."},
   {n:"Most Improved", d:"Biggest jump over your own previous week's score.", det:"Largest increase from last week's team total to this week's.", notWk1:true},
   {n:"Defense Wins Championships", d:"Highest D/ST score of the week.", det:"Top-scoring team defense among all started D/STs."},
@@ -340,46 +278,6 @@ if(!configured){
   }
 }
 
-/* ---------- 8-bit edition ----------
-   On automatically until the Week 2 window closes (Mon Sep 28 2026, 9:15 PM ET),
-   then the page reverts by itself. Add ?tecmo=1 to preview it, ?tecmo=0 to turn it off. */
-const TECMO = (() => {
-  const q = new URLSearchParams(location.search).get('tecmo');
-  if (q === '1') return true;
-  if (q === '0') return false;
-  return Date.now() < openAt(3);
-})();
-let soundOn = true, actx = null;
-function tone(freq, start, dur, vol){
-  const o = actx.createOscillator(), g = actx.createGain();
-  o.type = 'square'; o.frequency.value = freq;
-  g.gain.setValueAtTime(vol, start);
-  g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
-  o.connect(g); g.connect(actx.destination);
-  o.start(start); o.stop(start + dur + 0.02);
-}
-function spinSound(ms){
-  if (!TECMO || !soundOn) return;
-  try{
-    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-    actx.resume && actx.resume();
-    const t0 = actx.currentTime, T = ms / 1000;
-    // ticks that slow down with the reel
-    let t = 0, gap = 0.035;
-    while (t < T - 0.1){ tone(t < T*0.5 ? 880 : 660, t0 + t, 0.03, 0.06); t += gap; gap *= 1.075; }
-    // landing fanfare
-    [523, 659, 784, 1047].forEach((f, i) => tone(f, t0 + T + i*0.11, i === 3 ? 0.45 : 0.1, 0.08));
-  }catch(e){}
-}
-if (TECMO){
-  document.body.classList.add('tecmo');
-  $('kick').textContent = '★ Week 2 · 8-bit edition ★';
-  $('title').textContent = 'Mystery Rule Spinner';
-  $('tagline').textContent = 'Guest spinner: Tecmo Superteam. One spin. No continues.';
-  const sb = $('soundBtn');
-  sb.addEventListener('click', () => { soundOn = !soundOn; sb.textContent = 'SOUND: ' + (soundOn ? 'ON' : 'OFF'); });
-}
-
 /* ---------- rule pool ---------- */
 function usedIdx(){
   const s={};
@@ -414,7 +312,7 @@ function animateTo(idx, cb){
   strip.style.transition='none';
   strip.style.transform='translateY('+center+'px)';
   void strip.offsetHeight;
-  strip.style.transition = TECMO ? 'transform 3.4s steps(48,end)' : 'transform 3.4s cubic-bezier(.12,.66,.16,1)';
+  strip.style.transition='transform 3.4s cubic-bezier(.12,.66,.16,1)';
   strip.style.transform='translateY('+finalY+'px)';
   setTimeout(cb, 3550);
 }
@@ -452,7 +350,7 @@ function render(){
   spinBtn.textContent = rec && sel===cur ? '🔒 Week '+sel+' locked in'
                       : cur===null ? '🎡 SPIN THE WHEEL'
                       : sel!==cur ? '🔒 Week '+sel+' is closed'
-                      : (TECMO ? '▶ PRESS START' : '🎡 SPIN THE WHEEL');
+                      : '🎡 SPIN THE WHEEL';
   if(!lockmsg.classList.contains('err')) lockmsg.textContent=why;
 
   if(rec) showResult(rec, sel); else result.classList.remove('show');
@@ -496,7 +394,6 @@ function spin(){
   const by=whoIn.value.trim();
   if(week!==currentWeek() || state[week] || !by) return;
 
-  if(TECMO && soundOn){ try{ actx = actx || new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
   const pool=eligible(week);
   if(!pool.length){ lockmsg.className='lockmsg err'; lockmsg.textContent='No rules left in the pool.'; return; }
   const idx=pool[Math.floor(Math.random()*pool.length)];
@@ -514,7 +411,6 @@ function spin(){
     ts: firebase.database.ServerValue.TIMESTAMP
   }).then(()=>{
     lockmsg.textContent='';
-    spinSound(3400);
     animateTo(idx, ()=>{ spinning=false; render(); });
   }).catch(err=>{
     spinning=false;
